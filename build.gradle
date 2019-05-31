@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.0.0-rc4'
+    }
+}
+
 plugins {
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
     id "java"
@@ -6,11 +16,24 @@ plugins {
     id "com.github.johnrengelman.shadow" version "4.0.2"
     id "application"
 }
+apply plugin: 'com.google.cloud.tools.appengine'
 
 
-
-version "0.1"
+version "0-3"
 group "com.thescientist"
+
+ext {
+    appEngineProjectId = 'micronaut-circuit-breaker-test'
+    appEngineProjectVersion = project.version
+}
+
+appengine {
+    stage.artifact = "${buildDir}/libs/${project.name}-${project.version}.jar"
+    deploy {
+        projectId = appEngineProjectId
+        version = appEngineProjectVersion
+    }
+}
 
 repositories {
     mavenCentral()
